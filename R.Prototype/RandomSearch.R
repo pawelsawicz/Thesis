@@ -15,16 +15,21 @@ FuncMin <- function(FUN, RandomPoint, R)
 
 RandomSearch <- function(FUN, domain1, domain2)
 {
-  numberOfIterations <- 10;
+  numberOfIterations <- 40;
   result <- c();
+  bestResult <- 0;
   x <- seq(domain1,domain2,0.1);
   y <- FUN(x);
   plot(x,y, type='l')
   for(i in 1:numberOfIterations)
   {
-    result <- c(result,FuncMin(FUN, 5,0.5));
+    randomPoint <- runif(1,domain1,domain2);
+    result <- FuncMin(FUN, randomPoint,0.5);
+    if(result <= bestResult){
+      bestResult <- result
+    }
   }
-  result
+  bestResult
 }
 
 RandomSearch(FuctionToSolve, 0,15)
