@@ -23,8 +23,7 @@ KieferWolfowitz <- function(FUN, randomPoint, domain1, domain2){
     oldPoint <- newPoint
   }
   plot(x,y, 'l')
-  randomPoint
-  allPoints  
+  oldPoint
 }
 
 
