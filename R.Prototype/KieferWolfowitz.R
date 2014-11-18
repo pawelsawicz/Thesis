@@ -1,6 +1,4 @@
-KieferWolfowitz <- function(FUN, randomPoint, domain1, domain2){
-  x <- seq(domain1,domain2,0.1);
-  y <- FUN(x);
+KieferWolfowitz <- function(FUN, randomPoint, domain1, domain2){  
   numberOfIterations <- 30;
   oldPoint <- randomPoint;  
   for(n in 1:numberOfIterations){
