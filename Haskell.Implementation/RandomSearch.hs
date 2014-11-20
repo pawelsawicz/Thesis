@@ -14,26 +14,21 @@ getRandomPoint (x, y) = do
 	g <- newStdGen
 	return . take 20 $ randomRs(x,y) g
 
-getFunctionMinimum :: Double -> Double
-getFunctionMinimum randomValue = functionToSolve funcMinimum
+getFunMin :: (Double -> Double) -> Double -> Double
+getFunMin f x = f funMin
 	where
-		domain1 = randomValue + 0.5
-		domain2 = randomValue - 0.5
-		funcMinimum =  last (kieferWolfowitz [1..10] randomValue (domain1, domain2))
-
---randomSearchMain :: Double -> (Double, Double) -> IO ()
---randomSearchMain i (x,y) = do
---	point <- getRandomPoint(x,y)
---	print point
+		domain1 = x + 0.5
+		domain2 = x - 0.5
+		funMin =  last (kieferWolfowitz [1..10] x (domain1, domain2))
 
 -- random search
 -- to check if it makes any sense (?) 
 randomSearch :: [Double] -> Double
-randomSearch (x:[]) = randomSubsetMinimum
+randomSearch (x:[]) = subsetMin
 	where
-		randomSubsetMinimum = getFunctionMinimum x 
+		subsetMin = getFunMin (functionToSolve) x 
 randomSearch (x:zs)
-	| randomSubsetMinimum < randomSearch zs = randomSubsetMinimum
+	| subsetMin < randomSearch zs = subsetMin
 	| otherwise = randomSearch zs
 	where
-		randomSubsetMinimum = getFunctionMinimum x
+		subsetMin = getFunMin (functionToSolve) x
