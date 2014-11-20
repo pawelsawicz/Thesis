@@ -3,7 +3,7 @@ module KieferWolfowitz where
 
 --function created only for tests
 testFunction :: Double -> Double
-testFunction value = value * value
+testFunction x = ((2*sin(x)^2 + cos(x)) / 2) + (x*0.1)
 
 getAnParameter :: Double -> Double
 getAnParameter iteration = (1.0 / (iteration + 1.0))
