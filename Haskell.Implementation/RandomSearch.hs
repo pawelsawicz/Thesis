@@ -7,15 +7,15 @@ import KieferWolfowitz
 
 --function created only for tests
 functionToSolve :: Double -> Double
-functionToSolve x = ((2*sin(x)^2 + cos(x)) / 2) + (x*0.1)
+functionToSolve x = ((2 * sin x ^ 2 + cos x) / 2) + (x * 0.1)
 
 getRandomPoint :: (Double, Double) -> IO [Double]
 getRandomPoint (x, y) = do
 	g <- newStdGen
-	return . take 20 $ (randomRs(x,y) g)
+	return . take 20 $ randomRs(x,y) g
 
 getFunctionMinimum :: Double -> Double
-getFunctionMinimum randomValue = functionToSolve(funcMinimum)
+getFunctionMinimum randomValue = functionToSolve funcMinimum
 	where
 		domain1 = randomValue + 0.5
 		domain2 = randomValue - 0.5
@@ -31,9 +31,9 @@ getFunctionMinimum randomValue = functionToSolve(funcMinimum)
 randomSearch :: [Double] -> Double
 randomSearch (x:[]) = randomSubsetMinimum
 	where
-		randomSubsetMinimum = getFunctionMinimum(x)
+		randomSubsetMinimum = getFunctionMinimum x 
 randomSearch (x:zs)
-	| randomSubsetMinimum < randomSearch(zs) = randomSubsetMinimum
-	| otherwise = randomSearch(zs)
+	| randomSubsetMinimum < randomSearch zs = randomSubsetMinimum
+	| otherwise = randomSearch zs
 	where
-		randomSubsetMinimum = getFunctionMinimum(x)
+		randomSubsetMinimum = getFunctionMinimum x
