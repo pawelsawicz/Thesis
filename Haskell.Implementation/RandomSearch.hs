@@ -9,8 +9,10 @@ import KieferWolfowitz
 functionToSolve :: Double -> Double
 functionToSolve x = ((2*sin(x)^2 + cos(x)) / 2) + (x*0.1)
 
-getRandomPoint :: (Double, Double) -> Double
-getRandomPoint (x, y) = 5.0
+getRandomPoint :: (Double, Double) -> IO [Double]
+getRandomPoint (x, y) = do
+	g <- newStdGen
+	return . take 20 $ (randomRs(x,y) g)
 
 getFunctionMinimum :: Double -> Double
 getFunctionMinimum randomValue = functionToSolve(funcMinimum)
