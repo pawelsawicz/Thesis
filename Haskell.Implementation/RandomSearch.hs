@@ -1,43 +1,37 @@
 --RandomSearch not-parallel
-
 module RandomSearch where
-
-import KieferWolfowitz
 import System.Random
+import Control.Applicative
+import KieferWolfowitz
 
+
+--function created only for tests
 functionToSolve :: Double -> Double
-functionToSolve argument = argument * argument
+functionToSolve x = ((2*sin(x)^2 + cos(x)) / 2) + (x*0.1)
+
+getRandomPoint :: (Double, Double) -> Double
+getRandomPoint (x, y) = 5.0
 
 getFunctionMinimum :: Double -> Double
-getFunctionMinimum nth = nth 
+getFunctionMinimum randomValue = functionToSolve(funcMinimum)
+	where
+		domain1 = randomValue + 0.5
+		domain2 = randomValue - 0.5
+		funcMinimum =  last (kieferWolfowitz [1..10] randomValue (domain1, domain2))
 
--- generate n element array
-
-getRandomPointsForFunction :: Int -> [Double]
-getRandomPointsForFunction 0 = []
-getRandomPointsForFunction numberOfPoints = [2.0] ++ (getRandomPointsForFunction (numberOfPoints - 1)) 
-
-getRandomPoint :: Double
-getRandomPoint = 5.0 -- random point generator within main domain
+--randomSearchMain :: Double -> (Double, Double) -> IO ()
+--randomSearchMain i (x,y) = do
+--	point <- getRandomPoint(x,y)
+--	print point
 
 -- random search
 -- to check if it makes any sense (?) 
 randomSearch :: [Double] -> Double
-randomSearch (x:[]) = getFunctionMinimum(x)
+randomSearch (x:[]) = randomSubsetMinimum
+	where
+		randomSubsetMinimum = getFunctionMinimum(x)
 randomSearch (x:zs)
-	| getFunctionMinimum(x) < randomSearch(zs) = getFunctionMinimum(x)
+	| randomSubsetMinimum < randomSearch(zs) = randomSubsetMinimum
 	| otherwise = randomSearch(zs)
-
-randomSearchN :: Int -> Double
-randomSearchN 0 = getFunctionMinimum(getRandomPoint)  
-randomSearchN nTimes
-	| getFunctionMinimum(kieferWolfowitz(getRandomPoint)) <  randomSearchN(nTimes-1) = getFunctionMinimum(kieferWolfowitz(getRandomPoint))
-	| otherwise = randomSearchN(nTimes-1) 
-
--- 1. Generate N point - > return [Double]
--- 2. Run map k-w steps for each point
--- 3. Take result and check (?)
---if searchMin() < previouseMin()
---
---
-
+	where
+		randomSubsetMinimum = getFunctionMinimum(x)
