@@ -1,7 +1,7 @@
 --RandomSearch not-parallel
-module RandomSearch where
+
+module Main where
 import System.Random
-import Control.Applicative
 import KieferWolfowitz
 
 
@@ -32,3 +32,10 @@ randomSearch (x:zs)
 	| otherwise = randomSearch zs
 	where
 		subsetMin = getFunMin (functionToSolve) x
+
+main :: IO()
+main = do
+	print "Random Search with Kiefer - Wolfowitz SO"
+	print  (randomSearch [0.5,1..10])
+	inpStr <- getLine
+	print "End"
