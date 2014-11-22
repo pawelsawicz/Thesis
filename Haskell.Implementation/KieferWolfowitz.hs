@@ -18,8 +18,8 @@ kieferWolfowitz (x:xz) previousPoint (domain1, domain2) = calculatedPoint : kief
 
 calculatePoint :: Double -> Double -> (Double, Double)-> Double
 calculatePoint i oldValue (domain1, domain2)
-	| newPoint > domain1 = domain1
-	| newPoint < domain2 = domain2
+	| newPoint < domain1 = domain1
+	| newPoint > domain2 = domain2
 	| otherwise = newPoint
 	where
 		cn = getCnParameter i
