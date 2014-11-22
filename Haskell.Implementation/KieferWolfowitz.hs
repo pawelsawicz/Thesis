@@ -11,11 +11,6 @@ getAnParameter i = 1.0 / (i + 1.0)
 getCnParameter :: Double -> Double
 getCnParameter i = 2.0 /(i ** (1/6))
 
-kieferWolfowitz :: [Double] -> Double -> (Double, Double)-> [Double] --change [Double] into [Int]
-kieferWolfowitz [] _ (_,_)= []
-kieferWolfowitz (x:xz) previousPoint (domain1, domain2) = calculatedPoint : kieferWolfowitz xz calculatedPoint (domain1, domain2)
-	where calculatedPoint = calculatePoint x previousPoint (domain1, domain2)
-
 calculatePoint :: Double -> Double -> (Double, Double)-> Double
 calculatePoint i oldValue (domain1, domain2)
 	| newPoint < domain1 = domain1
@@ -25,3 +20,8 @@ calculatePoint i oldValue (domain1, domain2)
 		cn = getCnParameter i
 		an = getAnParameter i
 		newPoint = oldValue - an * ((testFunction(oldValue + cn)-testFunction(oldValue - cn))/cn)
+
+kieferWolfowitz :: [Double] -> Double -> (Double, Double)-> [Double]
+kieferWolfowitz [] _ (_,_)= []
+kieferWolfowitz (x:xz) previousPoint (domain1, domain2) = calculatedPoint : kieferWolfowitz xz calculatedPoint (domain1, domain2)
+	where calculatedPoint = calculatePoint x previousPoint (domain1, domain2)
