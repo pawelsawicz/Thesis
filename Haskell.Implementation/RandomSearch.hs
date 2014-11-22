@@ -4,7 +4,19 @@ module Main where
 import System.Random
 import KieferWolfowitz
 
+--global variables--
+randomPoints :: Int
+randomPoints = 30
 
+subsetWidth :: Double
+subsetWidth = 0.5
+
+lGlobalDomain :: Double
+lGlobalDomain = -20
+
+rGlobalDomain :: Double
+rGlobalDomain = 20
+--end global variables
 --function created only for tests
 functionToSolve :: Double -> Double
 functionToSolve x = ((2 * sin x ^ 2 + cos x) / 2) + (x * 0.1)
@@ -12,30 +24,24 @@ functionToSolve x = ((2 * sin x ^ 2 + cos x) / 2) + (x * 0.1)
 getRandomPoint :: (Double, Double) -> IO [Double]
 getRandomPoint (x, y) = do
 	g <- newStdGen
-	return . take 20 $ randomRs(x,y) g
+	return . take randomPoints $ randomRs(x,y) g
 
-getFunMin :: (Double -> Double) -> Double -> Double
-getFunMin f x = f funMin
+getKWValue :: Double -> Double
+getKWValue x = kwResult
 	where
-		domain1 = x + 0.5
-		domain2 = x - 0.5
-		funMin =  last (kieferWolfowitz [1..10] x (domain1, domain2))
+		candidateD1 = x - subsetWidth
+		candidateD2 = x + subsetWidth
+		d1 = if candidateD1 < lGlobalDomain then lGlobalDomain else candidateD1
+		d2 = if candidateD2 > rGlobalDomain then rGlobalDomain else candidateD2
+		kwResult =  last (kieferWolfowitz [1..10] x (d1, d2)) 
 
--- random search
--- to check if it makes any sense (?) 
 randomSearch :: [Double] -> Double
-randomSearch (x:[]) = subsetMin
-	where
-		subsetMin = getFunMin (functionToSolve) x 
-randomSearch (x:zs)
-	| subsetMin < randomSearch zs = subsetMin
-	| otherwise = randomSearch zs
-	where
-		subsetMin = getFunMin (functionToSolve) x
+randomSearch xs = minimum (map (functionToSolve) (map (getKWValue) xs))
 
 main :: IO()
 main = do
-	print "Random Search with Kiefer - Wolfowitz SO"
-	print  (randomSearch [0.5,1..10])
+	print "Random Search with Kiefer - Wolfowitz SO"	
+	randoms <- getRandomPoint(lGlobalDomain, rGlobalDomain)
+	print (randomSearch randoms)
 	inpStr <- getLine
 	print "End"
