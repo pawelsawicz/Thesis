@@ -36,7 +36,7 @@ getKWValue x = kwResult
 		candidateD2 = x + subsetWidth
 		d1 = if candidateD1 < lGlobalDomain then lGlobalDomain else candidateD1
 		d2 = if candidateD2 > rGlobalDomain then rGlobalDomain else candidateD2
-		kwResult =  last (kieferWolfowitz [1..kwSteps] x (d1, d2)) 
+		kwResult =  kieferWolfowitz [1..kwSteps] x (d1, d2) 
 
 randomSearch :: [Double] -> Double
 randomSearch xs = minimum (map (functionToSolve) (map (getKWValue) xs))
