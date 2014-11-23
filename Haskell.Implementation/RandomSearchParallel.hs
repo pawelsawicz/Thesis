@@ -11,7 +11,7 @@ import Control.Parallel.Strategies
 
 --global variables--
 randomPoints :: Int
-randomPoints = 1000
+randomPoints = 50000
 
 subsetWidth :: Double
 subsetWidth = 0.5
@@ -44,9 +44,10 @@ getKWValue x = kwResult
 		kwResult =  kieferWolfowitz [1..kwSteps] x (d1, d2) 
 
 randomSearch :: [Double] -> Double
-randomSearch xs = minimum $ parMap rseq (functionToSolve) $ parMap rdeepseq (getKWValue) xs
+randomSearch xs = minimum $ parMapByChunk (functionToSolve) $ parMapByChunk (getKWValue) xs
 
-
+parMapByChunk :: (a -> b) -> [a] ->  [b]
+parMapByChunk f xs = map f xs `using` parListChunk 1000 rseq
 
 main :: IO()
 main = do
