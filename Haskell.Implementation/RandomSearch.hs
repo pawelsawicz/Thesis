@@ -1,24 +1,27 @@
 --RandomSearch not-parallel
+{-# OPTIONS_GHC -eventlog -rtsopts -fforce-recomp #-}
 
 module Main where
 import System.Random
 import KieferWolfowitz
+import System.Environment
+import Text.Printf
 
 --global variables--
 randomPoints :: Int
-randomPoints = 30
+randomPoints = 1000
 
 subsetWidth :: Double
 subsetWidth = 0.5
 
 lGlobalDomain :: Double
-lGlobalDomain = -20
+lGlobalDomain = 0
 
 rGlobalDomain :: Double
-rGlobalDomain = 20
+rGlobalDomain = 15
 
 kwSteps :: Double
-kwSteps = 20
+kwSteps = 100
 --end global variables
 --function created only for tests
 functionToSolve :: Double -> Double
@@ -39,12 +42,11 @@ getKWValue x = kwResult
 		kwResult =  kieferWolfowitz [1..kwSteps] x (d1, d2) 
 
 randomSearch :: [Double] -> Double
-randomSearch xs = minimum (map (functionToSolve) (map (getKWValue) xs))
+randomSearch xs = minimum $ map (functionToSolve) $ map (getKWValue) xs
 
 main :: IO()
 main = do
 	print "Random Search with Kiefer - Wolfowitz SO"	
 	randoms <- getRandomPoint(lGlobalDomain, rGlobalDomain)
-	print (randomSearch randoms)
-	inpStr <- getLine
+	print (randomSearch randoms)	
 	print "End"
