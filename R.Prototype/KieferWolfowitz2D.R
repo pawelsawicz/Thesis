@@ -1,6 +1,6 @@
 KieferWolfowitz <- function(FUN, randomPointX, randomPointY, domainX1,domainX2,domainY1,domainY2)
 {
-  iterations <- 10;
+  iterations <- 20;
   oldPointX <- randomPointX;
   oldPointY <- randomPointY;
   for(i in 1:iterations)
@@ -38,8 +38,10 @@ KieferWolfowitz_Test_version <- function(FUN, randomPointX, randomPointY, domain
   z <- outer(x,y,functionToSolve);
   result <- KieferWolfowitz(FUN, randomPointX, randomPointY, domainX1, domainX2, domainY1, domainY2);
   par(bg = "white");
-  persp(x, y, z, theta = 90, phi=30, expand = 0.3, col = "lightblue",
-        ltheta = 120, shade = 0.75, ticktype = "detailed", border = NA, box = TRUE)
+  persp(x, y, z, theta = 90, phi=30, expand = 0.6, col = "lightblue",
+        ltheta = 120, shade = 0.75, ticktype = "detailed", border = NA, box = TRUE);
+  plot(x, FUN(x,0),'l');
+  plot(y, FUN(0,y),'l');
   result
 }
 functionToSolve <- function(x,y)
